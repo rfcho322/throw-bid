@@ -1,41 +1,24 @@
 import { auth } from '@/auth';
-import { SignIn } from '@/components/sign-in';
-import { SignOut } from '@/components/sign-out';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { database } from '@/db/database';
-import { bids as bidSchema, items } from '@/db/schema';
-import { revalidatePath } from 'next/cache';
+import Image from 'next/image';
 
 export default async function Home() {
 
-  const Items = await database.query.items.findMany();
   const session = await auth();
-
-  if(!session) return null;
-  if(!session.user) return null;
+  const allItems = await database.query.items.findMany();
 
   return (
-    <main className="container mx-auto py-12">
-      {session ? <SignOut /> : <SignIn /> }
-      {session?.user?.name}
-      <form action={async (formData: FormData) => {
-        'use server'
-        // const bid = formData.get("bid") as string;
-        await database.insert(items).values({
-          name: formData.get("name") as string,
-          userId: session?.user?.id!,
-        });
-        revalidatePath("/");
-      }}>
-        <Input className='text-black' name="name" type="text" placeholder='Name your item' />
-        <Button type='submit'>Post Item</Button>
-      </form>
-
-
-      {Items.map(item => (
-        <div key={item.id}>{item.name}</div>
-      ))}
+    <main className="container mx-auto py-12 space-y-8">
+      <h2 className='text-2xl font-bold'>Items For Sale</h2>
+      <div className='grid grid-cols-3 gap-6'>
+        {allItems.map(item => (
+          <div key={item.id} className='relative bg-neutral-800 border p-8 rounded-xl'>
+            <span className='absolute top-5 left-5'>{item.name}</span>
+            <Image className='mx-auto my-10 rounded-lg' src="https://placehold.co/300x300/png?text=Item+Image" width="300" height="300" alt="logo" />
+            <span className='absolute bottom-5 left-5'>Starting Price: ${item.startingPrice / 100}</span>
+          </div>
+        ))}  
+      </div>
     </main>
   );
 }
