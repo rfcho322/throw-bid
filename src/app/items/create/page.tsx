@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createItemAction } from './actions';
 import { useState } from 'react';
+import { useFormStatus } from 'react-dom';
+import { LoaderCircleIcon } from 'lucide-react';
 
 export default function CreatePage() {
 
@@ -30,7 +32,7 @@ export default function CreatePage() {
     }
 
     return (
-        <main className="container mx-auto py-12 space-y-8">
+        <main className="space-y-8">
             <h1 className='text-4xl font-bold'>
                 Add an item to sell
             </h1>
@@ -59,8 +61,18 @@ export default function CreatePage() {
                 <Input className='text-white max-w-lg bg-neutral-800'
                     name="file" type="file" 
                     onChange={handleImage}/>
-                <Button className='self-end border bg-white text-black hover:text-white' type='submit'>Post Item</Button>
+                <LoadingButton />
             </form>
         </main>
+    );
+}
+
+export function LoadingButton () {
+    const { pending } = useFormStatus();
+    return (
+        <Button className='flex gap-2 self-end border bg-white text-black hover:text-white' 
+            type='submit' disabled={pending}>
+            {pending && <LoaderCircleIcon className='animate-spin'/> } Post Item 
+        </Button>
     );
 }

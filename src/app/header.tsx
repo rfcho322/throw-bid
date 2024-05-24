@@ -15,10 +15,18 @@ export async function Header() {
                         <Image src="https://placehold.co/50x50/png?text=Logo" width="50" height="50" alt="logo" />
                         Throw Bid
                     </Link>
-                    <div>
+                    <div className="flex items-center gap-4">
+                        <Link href="/"
+                            className="flex items-center justify-center gap-2 rounded-sm px-2 py-2 hover:text-slate-400 hover:ring hover:ring-slate-400">
+                            All Auctions
+                        </Link>
+                        <Link href="/auctions"
+                            className="flex items-center justify-center gap-2 rounded-sm px-2 py-2 hover:text-slate-400 hover:ring hover:ring-slate-400">
+                            My Auctions
+                        </Link>
                         <Link href="/items/create"
                             className="flex items-center justify-center gap-2 rounded-sm px-2 py-2 hover:text-slate-400 hover:ring hover:ring-slate-400">
-                            Auction Item
+                            Create Auction
                         </Link>
                     </div>
                 </div>

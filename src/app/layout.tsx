@@ -33,7 +33,9 @@ export default function RootLayout({
           ibm.variable
         )}>
           <Header />
-          {children}
+          <div className="container py-12">
+            {children}
+          </div>
       </body>
     </html>
   );
