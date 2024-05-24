@@ -5,9 +5,18 @@ import { items } from '@/db/schema';
 import { auth } from "@/auth";
 import { redirect } from 'next/navigation';
 
-export async function createItemAction(formData: FormData) {
+export async function createItemAction(
+{ 
+    imageUrl, 
+    name, 
+    startingPrice 
+}: { 
+    imageUrl: string, 
+    name: string, 
+    startingPrice: number 
+}) {
     const session = await auth();
-    
+
     if (!session) {
         throw new Error("Unauthorized");
     }
@@ -18,13 +27,12 @@ export async function createItemAction(formData: FormData) {
         throw new Error("Unauthorized");
     }
 
-    const startingPrice = formData.get("startingPrice") as string;
-    const priceWithCents = Math.floor(parseFloat(startingPrice) * 100);
-
     await database.insert(items).values({
-        name: formData.get("name") as string,
-        startingPrice: priceWithCents,
+        name,
+        startingPrice,
+        imageUrl,
         userId: user.id,
     });
+
     redirect("/");
 }

@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { database } from '@/db/database';
-import Image from 'next/image';
+import { ItemCard } from './item-card';
 
 export default async function Home() {
 
@@ -12,11 +12,7 @@ export default async function Home() {
       <h2 className='text-2xl font-bold'>Items For Sale</h2>
       <div className='grid grid-cols-3 gap-6'>
         {allItems.map(item => (
-          <div key={item.id} className='relative bg-neutral-800 border p-8 rounded-xl'>
-            <span className='absolute top-5 left-5'>{item.name}</span>
-            <Image className='mx-auto my-10 rounded-lg' src="https://placehold.co/300x300/png?text=Item+Image" width="300" height="300" alt="logo" />
-            <span className='absolute bottom-5 left-5'>Starting Price: ${item.startingPrice / 100}</span>
-          </div>
+          <ItemCard key={item.id} item={item}/>
         ))}  
       </div>
     </main>

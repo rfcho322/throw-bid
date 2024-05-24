@@ -78,3 +78,7 @@
   .ibm-plex-mono {
     font-family: var(--font-ibm-plex-mono);
   }
+
+  input::file-selector-button {
+    color: #ffffff;
+  }
