@@ -7,12 +7,14 @@ import Link from 'next/link';
 import { createBidAction } from './actions';
 import { getBidsForItem } from '@/app/db-access/bids';
 import { getItem } from '@/app/db-access/items';
+import { auth } from '@/auth';
 
 function FormatDate(timeStamp: Date) {
     return formatDistance(timeStamp, new Date(), { addSuffix: true });
 }
 
 export default async function ItemPage({ params: { itemId }, }: { params: { itemId: string } }) {
+    const session = await auth();
 
     const item = await getItem(parseInt(itemId));
 
@@ -35,15 +37,24 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
 
     const hasBids = allBids.length > 0;
 
+    const canPlaceBid = session && item.userId !== session.user.id;
+
+    // const canPlaceBid =
+    // session && item.userId !== session.user.id && !isBidOver(item);
+
+    console.log(session);
+
     return (
         <main className="space-y-8">
             <div className='flex items-center justify-between'>
                 <h1 className='text-4xl'>
                     Auction for <span className='font-extrabold'>{item.name}</span>
                 </h1>
-                <form action={createBidAction.bind(null, item.id)}>
-                    <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
-                </form>
+                {canPlaceBid && (
+                    <form action={createBidAction.bind(null, item.id)}>
+                        <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
+                    </form>
+                )}
             </div>
             <div className='flex flex-wrap gap-8'>
                 <div className='flex-1 space-y-4'>
@@ -90,9 +101,11 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
                     <div className="space-y-4 flex flex-1 flex-col items-center">
                         <Image className='mt-8' src="/no-bid.svg" width="300" height="300" alt="empty"/>
                         <h2 className="text-2xl font-bold">No bids yet</h2>
-                        <form action={createBidAction.bind(null, item.id)}>
-                            <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
-                        </form>
+                        {canPlaceBid && (
+                            <form action={createBidAction.bind(null, item.id)}>
+                                <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
+                            </form>
+                        )}
                     </div>
                 )}
                 </div>

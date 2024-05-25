@@ -16,7 +16,7 @@ export default function CreatePage() {
         setFile(item);
     }
     // WE CHECK IF FILE OBJECT EXISTS   
-    console.log(file);
+    // console.log(file);
 
     const upload = async () => {
         const formData = new FormData();

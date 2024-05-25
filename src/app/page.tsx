@@ -4,7 +4,6 @@ import { ItemCard } from './item-card';
 
 export default async function Home() {
 
-  const session = await auth();
   const allItems = await database.query.items.findMany();
 
   return (
