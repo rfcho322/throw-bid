@@ -15,7 +15,7 @@ export async function Header() {
                         <Image src="https://placehold.co/50x50/png?text=Logo" width="50" height="50" alt="logo" />
                         Throw Bid
                     </Link>
-                    <div className="flex items-center gap-4">
+                    <div className="hidden sm:flex items-center gap-4">
                         <Link href="/"
                             className="flex items-center justify-center gap-2 rounded-sm px-2 py-2 hover:text-slate-400 hover:ring hover:ring-slate-400">
                             All Auctions
@@ -30,7 +30,7 @@ export async function Header() {
                         </Link>
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-4">
                     <div>{session?.user?.name}</div>
                     <div>{session ? <SignOut /> : <SignIn />}</div>
                 </div>

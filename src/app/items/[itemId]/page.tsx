@@ -1,12 +1,12 @@
 import { formatCurrency } from '@/app/utils/currency';
 import { Button } from '@/components/ui/button';
-import { database } from '@/db/database';
-import { items } from '@/db/schema';
 import { formatDistance } from 'date-fns';
-import { eq } from 'drizzle-orm';
 import { Clock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createBidAction } from './actions';
+import { getBidsForItem } from '@/app/db-access/bids';
+import { getItem } from '@/app/db-access/items';
 
 function FormatDate(timeStamp: Date) {
     return formatDistance(timeStamp, new Date(), { addSuffix: true });
@@ -14,9 +14,7 @@ function FormatDate(timeStamp: Date) {
 
 export default async function ItemPage({ params: { itemId }, }: { params: { itemId: string } }) {
 
-    const item = await database.query.items.findFirst({
-        where: eq(items.id, parseInt(itemId)),
-    });
+    const item = await getItem(parseInt(itemId));
 
     if (!item) {
         return (
@@ -33,42 +31,29 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
         );
     }
 
-    // const bids = [
-    //     {
-    //         id: 1,
-    //         amount: 100,
-    //         userName: "John",
-    //         timeStamp: new Date(),
-    //     },
-    //     {
-    //         id: 2,
-    //         amount: 200,
-    //         userName: "Alice",
-    //         timeStamp: new Date(),
-    //     },
-    //     {
-    //         id: 3,
-    //         amount: 300,
-    //         userName: "Bob",
-    //         timeStamp: new Date(),
-    //     }
+    const allBids = await getBidsForItem(item.id);
 
-    // ];
-
-    const bids = [];
-    const hasBids = bids.length > 0;
+    const hasBids = allBids.length > 0;
 
     return (
         <main className="space-y-8">
-            <h1 className='text-4xl'>
-                Auction for <span className='font-extrabold'>{item.name}</span>
-            </h1>
+            <div className='flex items-center justify-between'>
+                <h1 className='text-4xl'>
+                    Auction for <span className='font-extrabold'>{item.name}</span>
+                </h1>
+                <form action={createBidAction.bind(null, item.id)}>
+                    <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
+                </form>
+            </div>
             <div className='flex flex-wrap gap-8'>
                 <div className='flex-1 space-y-4'>
                     <div className='relative w-[400px] h-[400px]'>
                         <Image className='mx-auto rounded-lg bg-white' src={item.imageUrl} layout="fill" objectFit="cover" alt="logo" />
                     </div>
                     <div className='flex flex-col gap-2 text-xl'>
+                        <div>
+                            Current Bid: <span className='font-bold'>${formatCurrency(item.currentBid)}</span>
+                        </div>
                         <div>
                             Starting Price: <span className='font-bold'>${formatCurrency(item.startingPrice)}</span>
                         </div>
@@ -82,18 +67,18 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
                 {hasBids ? (
                     <>
                         <ul className='flex flex-col gap-4'>
-                            {bids.map((bid) => (
+                            {allBids.map((bid) => (
                                 <li key={bid.id}
                                     className='bg-neutral-800 rounded-xl p-5'
                                 >
                                     <div className='flex gap-4'>
                                         <div>
-                                            <span className='font-bold'>{bid.userName}</span> bid {" "}
-                                            <span className='font-bold'>${bid.amount}</span>
+                                            <span className='font-bold'>{bid.user.name}</span> bid {" "}
+                                            <span className='font-bold text-green-400'>${formatCurrency(bid.amount)}</span>
                                         </div>
                                         <div className='flex items-center gap-2 text-sm text-gray-500'>
                                             <Clock className='w-5 h-5'/> 
-                                            {FormatDate(bid.timeStamp)}
+                                            {FormatDate(bid.timestamp)}
                                         </div>
                                     </div>
                                 </li>
@@ -105,7 +90,9 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
                     <div className="space-y-4 flex flex-1 flex-col items-center">
                         <Image className='mt-8' src="/no-bid.svg" width="300" height="300" alt="empty"/>
                         <h2 className="text-2xl font-bold">No bids yet</h2>
-                        <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
+                        <form action={createBidAction.bind(null, item.id)}>
+                            <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>
+                        </form>
                     </div>
                 )}
                 </div>
