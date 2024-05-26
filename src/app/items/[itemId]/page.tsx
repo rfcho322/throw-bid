@@ -8,6 +8,8 @@ import { createBidAction } from './actions';
 import { getBidsForItem } from '@/app/db-access/bids';
 import { getItem } from '@/app/db-access/items';
 import { auth } from '@/auth';
+import { isBidOver } from '@/app/utils/bids';
+import { Badge } from '@/components/ui/badge';
 
 function FormatDate(timeStamp: Date) {
     return formatDistance(timeStamp, new Date(), { addSuffix: true });
@@ -37,19 +39,24 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
 
     const hasBids = allBids.length > 0;
 
-    const canPlaceBid = session && item.userId !== session.user.id;
+    // const canPlaceBid = session && item.userId !== session.user.id;
 
-    // const canPlaceBid =
-    // session && item.userId !== session.user.id && !isBidOver(item);
+    const canPlaceBid = session && item.userId !== session.user.id && !isBidOver(item);
 
     console.log(session);
 
     return (
         <main className="space-y-8">
             <div className='flex items-center justify-between'>
-                <h1 className='text-4xl'>
-                    Auction for <span className='font-extrabold'>{item.name}</span>
-                </h1>
+                <div className='flex items-center gap-4'>
+                    <h1 className='text-4xl'>
+                        Auction for <span className='font-extrabold'>{item.name}</span>
+                    </h1>
+                    {isBidOver(item) && (
+                        <Badge className='w-fit' variant="destructive">Bidding Over </Badge>
+                    )}
+                </div>
+
                 {canPlaceBid && (
                     <form action={createBidAction.bind(null, item.id)}>
                         <Button className='border bg-white text-black hover:text-white'>Place a Bid</Button>

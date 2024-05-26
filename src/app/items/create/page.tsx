@@ -5,8 +5,11 @@ import { createItemAction } from './actions';
 import { useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { LoaderCircleIcon } from 'lucide-react';
+import { DatePickerDemo } from '@/components/date-picker';
 
 export default function CreatePage() {
+
+    const [date, setDate] = useState<Date | undefined>();
 
     const [file, setFile] = useState<File>();
 
@@ -40,6 +43,10 @@ export default function CreatePage() {
                 className='flex flex-col border p-8 rounded-xl space-y-4 max-w-lg'
                 onSubmit={async (e) => {
                     e.preventDefault();
+
+                    if (!date) {
+                        return;
+                    }
                     const form = e.currentTarget as HTMLFormElement;
                     const formData = new FormData(form);
 
@@ -52,15 +59,20 @@ export default function CreatePage() {
                         imageUrl: url,
                         name,
                         startingPrice: priceWithCents,
+                        endDate: date,
                     });
                 }}>
                 <Input className='text-white max-w-lg bg-neutral-800' 
                     name="name" type="text" placeholder='Name your item' />
                 <Input className='text-white max-w-lg bg-neutral-800' 
                     name="startingPrice" type="number" step="0.01" placeholder='Place your starting price' />
-                <Input className='text-white max-w-lg bg-neutral-800'
+                <Input className='max-w-lg bg-neutral-800'
                     name="file" type="file" 
                     onChange={handleImage}/>
+                <DatePickerDemo 
+                    date={date}
+                    setDate={setDate}
+                />
                 <LoadingButton />
             </form>
         </main>

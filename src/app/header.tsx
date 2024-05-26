@@ -1,7 +1,7 @@
 'use client'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { NotificationCell, NotificationFeedPopover, NotificationIconButton, ButtonGroup as KnockButtonGroup, Button as KnockButton } from "@knocklabs/react";
+import { NotificationCell, NotificationFeedPopover, NotificationIconButton } from "@knocklabs/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,8 +62,10 @@ export function Header() {
                                         </Avatar>}
                                     >
                                         <div className="flex gap-3 items-center text-gray-300 text-sm">
-                                            <div>out bid by <span className="font-bold"> ${formatCurrency(item.data.bidAmount)}</span></div>
-                                            <Link href={`/items/${item?.data?.itemId}`}
+                                            <div>Out bid by <span className="font-bold"> ${formatCurrency(item.data.bidAmount)}</span></div>
+                                            <Link
+                                                onClick={() => setIsVisible(false)} 
+                                                href={`/items/${item?.data?.itemId}`}
                                                 className="font-bold bg-blue-700 hover:bg-blue-800 px-2 py-1 rounded-sm transition-colors duration-100"
                                             >
                                                 Inspect Bid

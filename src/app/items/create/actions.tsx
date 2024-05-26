@@ -9,11 +9,13 @@ export async function createItemAction(
 { 
     imageUrl, 
     name, 
-    startingPrice 
+    startingPrice,
+    endDate,
 }: { 
-    imageUrl: string, 
-    name: string, 
-    startingPrice: number 
+    imageUrl: string;
+    name: string; 
+    startingPrice: number;
+    endDate: Date;
 }) {
     const session = await auth();
 
@@ -32,6 +34,7 @@ export async function createItemAction(
         startingPrice,
         imageUrl,
         userId: user.id,
+        endDate,
     });
 
     redirect("/");

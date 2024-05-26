@@ -29,14 +29,14 @@ export default async function RootLayout({
           "min-h-screen bg-neutral-950 text-white ibm-plex-mono antialiased",
           ibm.variable
         )}>
-          <SessionProvider>
-            <AppKnockProviders>
-              <Header />
-              <div className="container py-12">
-                {children}
-              </div>
-            </AppKnockProviders>
-          </SessionProvider>
+            <SessionProvider>
+              <AppKnockProviders>
+                <Header />
+                <div className="container py-12">
+                  {children}
+                </div>
+              </AppKnockProviders>
+            </SessionProvider>
       </body>
     </html>
   );
