@@ -56,7 +56,6 @@ export function Header() {
                                         key={item.id}
                                         {...props}
                                         item={item}
-                                        // @ts-ignore
                                         avatar={<Avatar>
                                             <AvatarImage src={item.actors[0].properties?.avatar ?? "/default_avatar.webp"} alt="@user avatar" />
                                         </Avatar>}
@@ -79,7 +78,7 @@ export function Header() {
 
                     {session?.data?.user.image && (
                         <Avatar>
-                            <AvatarImage src={session.data.user.image} alt="@user avatar" />
+                            <AvatarImage src={session.data.user.image} alt="user avatar" />
                             <AvatarFallback>TB</AvatarFallback>
                         </Avatar>
                     )}

@@ -22,7 +22,7 @@ export function DatePickerDemo({
 }) {
     return (
         <Popover>
-            <PopoverTrigger asChild className="bg-neutral-800 hover:bg-neutral-700 hover:border-2 hover:text-white">
+            <PopoverTrigger asChild className="bg-neutral-800 hover:bg-neutral-700 hover:text-white">
                 <Button
                     variant={"outline"}
                     className={cn(

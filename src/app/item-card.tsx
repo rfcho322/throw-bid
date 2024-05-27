@@ -10,15 +10,9 @@ export function ItemCard({ item }: { item: Item }) {
     return (
         <div key={item.id} className='relative bg-neutral-800 border py-5 px-5 rounded-xl'> {/* remove h-[400px] */}
             <span className="absolute top-5 left-5 text-lg">{item.name}</span>
-            {/* <div style={{ position: "relative", width: "100%", paddingBottom: "75%" }}>
-                <Image className='mx-auto my-8 rounded-lg bg-white' src={item.imageUrl} layout="fill" objectFit="cover" alt="logo" />
-            </div> */}
             <div className='relative w-auto h-[300px] mt-10 mb-4'>
-                <Image className='bg-white rounded-xl object-cover' fill sizes="(max-width: 300px) 100vw, 33vw" src={item.imageUrl} alt="logo" />
+                <Image className='bg-white rounded-xl object-cover' loading="lazy" fill sizes="(max-width: 300px) 100vw, 33vw" src={item.imageUrl} alt="logo" />
             </div>
-            {/* <div className='absolute bottom-5 left-5 text-lg'>
-                Starting Price: <span className="font-bold">${formatCurrency(item.startingPrice)}</span>
-            </div> */}
             <div className="flex flex-col gap-2">
                 <div>
                     Starting Price: <span className="font-bold">${formatCurrency(item.startingPrice)}</span>
