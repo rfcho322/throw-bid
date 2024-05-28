@@ -53,7 +53,7 @@ export default async function ItemPage({ params: { itemId }, }: { params: { item
                         Auction for <span className='font-extrabold'>{item.name}</span>
                     </h1>
                     {isBidOver(item) && (
-                        <Badge className='w-fit' variant="destructive">Bidding Over </Badge>
+                        <Badge className='w-fit' variant="destructive">BIDDING OVER</Badge>
                     )}
                 </div>
 

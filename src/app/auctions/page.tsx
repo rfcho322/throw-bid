@@ -10,8 +10,8 @@ export default async function MyAuctionPage() {
 
   const session = await auth();
   if (!session || !session.user) {
-    throw new Error("Unauthorized");
-    // redirect("/");
+    redirect("/");
+    // throw new Error("Unauthorized");
   }
 
   const allItems = await database.query.items.findMany({
