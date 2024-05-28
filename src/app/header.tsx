@@ -20,7 +20,7 @@ export function Header() {
             <div className="container flex justify-between items-center">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image src="https://placehold.co/50x50/png?text=Logo" width="50" height="50" alt="logo" />
+                        <Image src="/throw_bid_logo.png" width="40" height="30" alt="Throw Bid logo" />
                         Throw Bid
                     </Link>
                     {userId && (
